@@ -6,12 +6,19 @@
 DC=dmd
 DINC=libnng
 
+ifdef DEBUG
+DCFLAGS+=-g
+endif
+ifdef OPTIMIZE
+DCFLAGS+=-O
+endif
+
 ifeq ($(NNG_WITH_MBEDTLS),ON)
-	DCFLAGS=-O -d -m64 -i -version=withtls
-	DLFLAGS=-Lextern/nng/build/lib/ -Lextern/mbedtls/build/lib/ -lnng -lmbedtls -lmbedcrypto -lmbedx509
+	DCFLAGS+=-d -m64 -i -version=withtls
+	DLFLAGS+=-Lextern/nng/build/lib/ -Lextern/mbedtls/build/lib/ -lnng -lmbedtls -lmbedcrypto -lmbedx509
 else
-	DCFLAGS=-O -d -m64 -i
-	DLFLAGS=-Lextern/nng/build/lib/ -lnng
+	DCFLAGS+=-d -m64 -i
+	DLFLAGS+=-Lextern/nng/build/lib/ -lnng
 endif
 
 DTESTS=$(wildcard tests/*.d)
